@@ -1,4 +1,5 @@
 from tkinter import *
+from tkinter import messagebox
 from tkinter.tix import ComboBox
 from tkinter.ttk import Combobox
 from database import Database
@@ -32,7 +33,7 @@ class NewPage:
         confirm = Button(self.window, text="SEND", command=self.ComData).grid(column=3, row=20)
         
     def DataCollect(self):
-        self.info['DataBase'] = self.DB_name.get()
+        self.info['DataBase'] = self.DB_name.get() + '.db'
         self.info['Table'] = self.Table_name.get()
         self.info['Columns'] = self.cols_option.get()
         
@@ -51,6 +52,12 @@ class NewPage:
         print(self.send_data)
         created = Database(self.info['DataBase'])
         created.create_table(self.info['Table'], self.send_data)
-        
+        messagebox.showinfo("Created", f"{self.info['DataBase']} Created! \n{self.info['Table']} Created!")
+        self.window.destroy()
+        self.window = Tk()
+        self.window.title(f"{self.info['DataBase']}")
+        self.window.minsize(500, 500)
+        self.window.config(padx=50, pady=50)
+        self.label = Label(self.window, text=f"{self.info['Table']}", font=("Helvetica", 26)).grid(column=0, row=0, columnspan=2)
         
             
